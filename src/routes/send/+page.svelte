@@ -5,8 +5,8 @@
 	let { data }: { data: PageData } = $props();
 
 	const DEFAULT_FOOTER =
-		'You received this email because your address was on a list provided to the sender. ' +
-		'To stop receiving these emails, reply with "unsubscribe".';
+		'If you’d prefer not to receive these emails, just reply with “unsubscribe” ' +
+		'and we’ll remove you from this list.';
 
 	// --- Form / contact state (browser-only; nothing persisted) ---
 	let fileInput: HTMLInputElement | null = $state(null);

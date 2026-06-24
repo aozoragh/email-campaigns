@@ -53,7 +53,9 @@ function nowIso(): string {
 function composeBody(body: string, footer: string): string {
 	const trimmedFooter = footer.trim();
 	if (!trimmedFooter) return body;
-	return `${body}\n\n--\n${trimmedFooter}`;
+	// "-- " (dash-dash-space) is the standard RFC signature delimiter; mail
+	// clients recognize it and visually separate the footer from the message.
+	return `${body.trimEnd()}\n\n-- \n${trimmedFooter}`;
 }
 
 /**
