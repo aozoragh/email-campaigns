@@ -17,8 +17,21 @@ import { sendViaOutlook, TokenExpiredError as OutlookTokenExpired } from './outl
 // ---- SAFE SENDING LIMITS (enforced below) ----
 /** Hard cap on recipients per run. Conservative by design. */
 export const MAX_RECIPIENTS_PER_RUN = 50;
-/** Delay between individual sends, in milliseconds. */
-export const SEND_DELAY_MS = 1200;
+// Delay between individual sends. A random value in [MIN, MAX] is waited after
+// each send to pace the run (not a spam-evasion tactic — sending is still
+// sequential from the user's own authenticated account).
+// NOTE: the OAuth access token is held in-memory with a ~1 hour lifetime and we
+// store no refresh token, so a single run can only keep sending for ~1 hour.
+// At 3-6 minutes/email that means only the first ~10-13 recipients will send
+// before the token expires and the run aborts. Keep batches small accordingly.
+export const SEND_DELAY_MIN_MS = 3 * 60 * 1000; // 3 minutes
+export const SEND_DELAY_MAX_MS = 6 * 60 * 1000; // 6 minutes
+
+/** Random pacing delay in [SEND_DELAY_MIN_MS, SEND_DELAY_MAX_MS]. */
+function nextDelayMs(): number {
+	const span = SEND_DELAY_MAX_MS - SEND_DELAY_MIN_MS;
+	return SEND_DELAY_MIN_MS + Math.floor(Math.random() * (span + 1));
+}
 /** Abort the run after this many consecutive failures (circuit breaker). */
 export const MAX_CONSECUTIVE_FAILURES = 5;
 
@@ -157,8 +170,8 @@ export async function* runSend(input: SendRunInput): AsyncGenerator<SendProgress
 			}
 		}
 
-		// Small pause between sends. Not a spam tactic — just gentle pacing.
-		await delay(SEND_DELAY_MS);
+		// Randomized pause (3-6 min) between sends — gentle pacing, not a spam tactic.
+		await delay(nextDelayMs());
 	}
 
 	yield { type: 'done', totals: { sent, failed, skipped } };
