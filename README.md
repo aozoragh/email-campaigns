@@ -53,10 +53,10 @@ Copy [`.env.example`](.env.example) to `.env` and fill it in:
 | --- | --- |
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
-| `GOOGLE_REDIRECT_URI` | e.g. `http://localhost:5180/auth/gmail/callback` |
+| `GOOGLE_REDIRECT_URI` | e.g. `http://localhost:5173/auth/gmail/callback` |
 | `MICROSOFT_CLIENT_ID` | Microsoft (Entra) app client ID |
 | `MICROSOFT_CLIENT_SECRET` | Microsoft client secret |
-| `MICROSOFT_REDIRECT_URI` | e.g. `http://localhost:5180/auth/outlook/callback` |
+| `MICROSOFT_REDIRECT_URI` | e.g. `http://localhost:5173/auth/outlook/callback` |
 | `SESSION_SECRET` | Long random string used to sign the session cookie |
 
 A provider's **Connect** button is automatically disabled if its variables are missing.
@@ -75,7 +75,7 @@ A provider's **Connect** button is automatically disabled if its variables are m
 5. **APIs & Services → Credentials → Create Credentials → OAuth client ID →
    Web application.**
 6. Under **Authorized redirect URIs**, add exactly:
-   `http://localhost:5180/auth/gmail/callback`
+   `http://localhost:5173/auth/gmail/callback`
 7. Copy the **Client ID** and **Client secret** into `.env`
    (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`), and set `GOOGLE_REDIRECT_URI`
    to the same callback URL.
@@ -90,7 +90,7 @@ A provider's **Connect** button is automatically disabled if its variables are m
 2. Choose **Accounts in any organizational directory and personal Microsoft
    accounts** (matches the `common` authority used here).
 3. Under **Redirect URI**, select platform **Web** and add exactly:
-   `http://localhost:5180/auth/outlook/callback`
+   `http://localhost:5173/auth/outlook/callback`
 4. After creating it, copy the **Application (client) ID** into `MICROSOFT_CLIENT_ID`.
 5. **Certificates & secrets → New client secret →** copy the secret **Value**
    into `MICROSOFT_CLIENT_SECRET`.
@@ -105,7 +105,7 @@ A provider's **Connect** button is automatically disabled if its variables are m
 ```bash
 npm install
 cp .env.example .env   # then fill in the values
-npm run dev            # http://localhost:5180
+npm run dev            # http://localhost:5173
 ```
 
 Type-check / build:
