@@ -4,9 +4,9 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const DEFAULT_FOOTER =
-		'If you’d prefer not to receive these emails, just reply with “unsubscribe” ' +
-		'and we’ll remove you from this list.';
+	// No footer by default. The field below stays available so a footer can be
+	// added per-send, but emails go out with no footer unless one is entered.
+	const DEFAULT_FOOTER = '';
 
 	// --- Form / contact state (browser-only; nothing persisted) ---
 	let fileInput: HTMLInputElement | null = $state(null);
